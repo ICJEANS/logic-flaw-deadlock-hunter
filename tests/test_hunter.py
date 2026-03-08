@@ -3,7 +3,7 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parents[1] / 'src'))
 import unittest
 from tempfile import TemporaryDirectory
-from hunter import analyze_text, analyze_path
+from hunter import analyze_text, analyze_path, to_report
 
 
 class TestHunter(unittest.TestCase):
@@ -48,6 +48,13 @@ class TestHunter(unittest.TestCase):
     def test_race_condition_requires_shared_write_signal(self):
         rows = analyze_text("import threading\nthreading.Thread(target=lambda: None)\n")
         self.assertFalse(any(r[1] == "RaceCondition" for r in rows))
+
+    def test_report_orders_severity(self):
+        report = to_report([
+            ("low", "RaceCondition", "f.py", 2, "x"),
+            ("high", "InfiniteLoop", "f.py", 1, "y"),
+        ])
+        self.assertLess(report.find("|high|InfiniteLoop"), report.find("|low|RaceCondition"))
 
     def test_no_deadlock_for_single_lock_order(self):
         sample = (

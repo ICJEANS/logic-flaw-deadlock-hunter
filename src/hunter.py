@@ -63,6 +63,8 @@ def analyze_path(target: str):
 def to_report(rows):
     if not rows:
         return "No major logic/deadlock risks detected."
+    rank = {"high": 0, "medium": 1, "low": 2}
+    rows = sorted(rows, key=lambda r: (rank.get(r[0], 99), r[2], r[3], r[1]))
     s = ["# Simulation Report", "", "|Severity|Category|File|Line|Scenario|", "|---|---|---|---:|---|"]
     for r in rows:
         s.append(f"|{r[0]}|{r[1]}|{r[2]}|{r[3]}|{r[4]}|")

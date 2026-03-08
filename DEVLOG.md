@@ -56,3 +56,10 @@
 - Local test evidence:
   - Command: `python3 -m unittest discover -s tests -v`
   - Result: `Ran 9 tests` / `OK`
+
+## 2026-03-08 Round 8
+- Sorted report rows by severity/file/line for stable priority-first output.
+- Added test `test_report_orders_severity`.
+- Local test evidence:
+  - Command: `python3 -m unittest discover -s tests -v`
+  - Result: `Ran 10 tests` / `OK`
