@@ -47,7 +47,9 @@ def analyze_text(text: str):
 
 def analyze_path(target: str):
     p = Path(target)
-    files = [p] if p.is_file() else [f for f in p.rglob("*.py")]
+    if not p.exists():
+        return []
+    files = [p] if p.is_file() else sorted([f for f in p.rglob("*.py")], key=lambda x: str(x))
     report = []
     for f in files:
         text = f.read_text(encoding='utf-8', errors='ignore')

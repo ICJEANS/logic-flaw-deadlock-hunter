@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parents[1] / 'src'))
 import unittest
-from hunter import analyze_text
+from hunter import analyze_text, analyze_path
 
 
 class TestHunter(unittest.TestCase):
@@ -33,6 +33,9 @@ class TestHunter(unittest.TestCase):
     def test_detect_lock_leak(self):
         rows = analyze_text("lock_a.acquire()\nprint('work')\n")
         self.assertTrue(any(r[1] == "LockLeak" for r in rows))
+
+    def test_analyze_path_missing_target(self):
+        self.assertEqual(analyze_path('/tmp/no-such-hunter-target-12345'), [])
 
     def test_no_deadlock_for_single_lock_order(self):
         sample = (
