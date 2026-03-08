@@ -65,6 +65,10 @@ class TestHunter(unittest.TestCase):
         rows = analyze_text(sample)
         self.assertFalse(any(r[1] == "Deadlock" for r in rows))
 
+    def test_report_escapes_pipe_characters(self):
+        report = to_report([("high", "Cat|A", "f.py", 1, "msg|x")])
+        self.assertIn("Cat\\|A", report)
+
     def test_no_deadlock_for_single_lock_order(self):
         sample = (
             "lock_a.acquire()\n"

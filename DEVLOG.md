@@ -70,3 +70,11 @@
 - Local test evidence:
   - Command: `python3 -m unittest discover -s tests -v`
   - Result: `Ran 11 tests` / `OK`
+
+## 2026-03-08 Round 10
+- Escaped pipe characters in markdown report cells to keep table rendering stable.
+- CI command now explicitly uses `python3 -m unittest discover -s tests -v` to match local runs.
+- Added test `test_report_escapes_pipe_characters`.
+- Local test evidence:
+  - Command: `python3 -m unittest discover -s tests -v`
+  - Result: `Ran 12 tests` / `OK`

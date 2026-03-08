@@ -67,6 +67,7 @@ def to_report(rows):
     rows = sorted(rows, key=lambda r: (rank.get(r[0], 99), r[2], r[3], r[1]))
     s = ["# Simulation Report", "", "|Severity|Category|File|Line|Scenario|", "|---|---|---|---:|---|"]
     for r in rows:
-        s.append(f"|{r[0]}|{r[1]}|{r[2]}|{r[3]}|{r[4]}|")
+        esc = [str(x).replace('|', '\\|') for x in r]
+        s.append(f"|{esc[0]}|{esc[1]}|{esc[2]}|{esc[3]}|{esc[4]}|")
     s.append("\nSafe workaround: enforce lock ordering and add bounded timeout/retry.")
     return "\n".join(s)
