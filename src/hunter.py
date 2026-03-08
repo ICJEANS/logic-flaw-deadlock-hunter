@@ -40,8 +40,10 @@ def analyze_text(text: str):
     if acquires > releases:
         issues.append(("medium", "LockLeak", 1, "More lock acquire() than release() calls"))
 
-    if re.search(r"threading\.Thread|asyncio\.create_task", text):
-        issues.append(("low", "RaceCondition", 1, "Concurrency detected; validate shared-state synchronization"))
+    has_concurrency = re.search(r"threading\.Thread|asyncio\.create_task", text)
+    shared_write = re.search(r"\bglobal\b|\[[^\]]+\]\s*=|\w+\.[A-Za-z_][A-Za-z0-9_]*\s*=", text)
+    if has_concurrency and shared_write:
+        issues.append(("low", "RaceCondition", 1, "Concurrency + shared-state writes detected; validate synchronization"))
     return issues
 
 

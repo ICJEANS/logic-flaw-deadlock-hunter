@@ -49,3 +49,10 @@
 - Local test evidence:
   - Command: `python3 -m unittest discover -s tests -v`
   - Result: `Ran 8 tests` / `OK`
+
+## 2026-03-08 Round 7
+- Tightened race-condition heuristic: now requires both concurrency primitives and shared-state write signals.
+- Added test `test_race_condition_requires_shared_write_signal`.
+- Local test evidence:
+  - Command: `python3 -m unittest discover -s tests -v`
+  - Result: `Ran 9 tests` / `OK`

@@ -45,6 +45,10 @@ class TestHunter(unittest.TestCase):
             rows = analyze_path(td)
             self.assertTrue(any(r[1] == "InfiniteLoop" for r in rows))
 
+    def test_race_condition_requires_shared_write_signal(self):
+        rows = analyze_text("import threading\nthreading.Thread(target=lambda: None)\n")
+        self.assertFalse(any(r[1] == "RaceCondition" for r in rows))
+
     def test_no_deadlock_for_single_lock_order(self):
         sample = (
             "lock_a.acquire()\n"
