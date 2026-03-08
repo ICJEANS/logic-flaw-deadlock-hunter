@@ -2,16 +2,38 @@ import re
 from pathlib import Path
 
 
+ACQUIRE_RE = re.compile(r"(\w+)\.acquire\(\)")
+
+
+def _lock_orders(lines: list[str]) -> set[tuple[str, str]]:
+    orders: set[tuple[str, str]] = set()
+    current: list[str] = []
+
+    for line in lines:
+        acquired = ACQUIRE_RE.findall(line)
+        if acquired:
+            current.extend(acquired)
+            if len(current) >= 2:
+                for i in range(len(current) - 1):
+                    orders.add((current[i], current[i + 1]))
+        if ".release(" in line:
+            current = []
+
+    return orders
+
+
 def analyze_text(text: str):
     issues = []
     lines = text.splitlines()
     for i, l in enumerate(lines, start=1):
         if re.search(r"while\s+True\s*:", l):
             issues.append(("high", "InfiniteLoop", i, "while True detected; ensure break/timeout"))
-    acquires = [re.findall(r"(\w+)\.acquire\(\)", l) for l in lines]
-    order = [a[0] for a in acquires if a]
-    if len(order) >= 2 and len(set(order[:2])) == 2:
-        issues.append(("medium", "Deadlock", 1, "Multiple lock acquire order detected; validate global lock ordering"))
+
+    orders = _lock_orders(lines)
+    has_reversed_pair = any((b, a) in orders for a, b in orders if a != b)
+    if has_reversed_pair:
+        issues.append(("medium", "Deadlock", 1, "Inconsistent lock acquisition order detected across code paths"))
+
     if re.search(r"threading\.Thread|asyncio\.create_task", text):
         issues.append(("low", "RaceCondition", 1, "Concurrency detected; validate shared-state synchronization"))
     return issues
