@@ -26,8 +26,8 @@ def analyze_text(text: str):
     issues = []
     lines = text.splitlines()
     for i, l in enumerate(lines, start=1):
-        if re.search(r"while\s+True\s*:", l):
-            issues.append(("high", "InfiniteLoop", i, "while True detected; ensure break/timeout"))
+        if re.search(r"while\s+(True|1)\s*:", l):
+            issues.append(("high", "InfiniteLoop", i, "while True/1 detected; ensure break/timeout"))
 
     orders = _lock_orders(lines)
     has_reversed_pair = any((b, a) in orders for a, b in orders if a != b)

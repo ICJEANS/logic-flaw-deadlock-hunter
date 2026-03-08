@@ -10,6 +10,10 @@ class TestHunter(unittest.TestCase):
         rows = analyze_text("while True:\n    pass\n")
         self.assertTrue(any(r[1] == "InfiniteLoop" for r in rows))
 
+    def test_detect_while_one_infinite_loop(self):
+        rows = analyze_text("while 1:\n    pass\n")
+        self.assertTrue(any(r[1] == "InfiniteLoop" for r in rows))
+
     def test_detect_reversed_lock_order_deadlock_risk(self):
         sample = (
             "lock_a.acquire()\n"

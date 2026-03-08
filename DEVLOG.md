@@ -13,3 +13,11 @@
 - Local test evidence:
   - Command: `python3 -m unittest discover -s tests -v`
   - Result: `Ran 3 tests in 0.000s` / `OK`
+
+
+## 2026-03-08 Round 2
+- Expanded infinite-loop detection from `while True` to `while 1` patterns.
+- Added test `test_detect_while_one_infinite_loop`.
+- Local test evidence:
+  - Command: `python3 -m unittest discover -s tests -v`
+  - Result: `Ran 4 tests` / `OK`
