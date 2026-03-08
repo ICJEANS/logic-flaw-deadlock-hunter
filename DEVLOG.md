@@ -28,3 +28,10 @@
 - Local test evidence:
   - Command: `python3 -m unittest discover -s tests -v`
   - Result: `Ran 5 tests` / `OK`
+
+## 2026-03-08 Round 4
+- Added `LockLeak` heuristic when acquire/release counts are unbalanced.
+- Added test `test_detect_lock_leak`.
+- Local test evidence:
+  - Command: `python3 -m unittest discover -s tests -v`
+  - Result: `Ran 6 tests` / `OK`

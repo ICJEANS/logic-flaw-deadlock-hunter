@@ -30,6 +30,10 @@ class TestHunter(unittest.TestCase):
         rows = analyze_text(sample)
         self.assertTrue(any(r[1] == "Deadlock" for r in rows))
 
+    def test_detect_lock_leak(self):
+        rows = analyze_text("lock_a.acquire()\nprint('work')\n")
+        self.assertTrue(any(r[1] == "LockLeak" for r in rows))
+
     def test_no_deadlock_for_single_lock_order(self):
         sample = (
             "lock_a.acquire()\n"

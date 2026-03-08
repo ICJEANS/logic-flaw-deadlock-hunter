@@ -35,6 +35,11 @@ def analyze_text(text: str):
     if has_reversed_pair:
         issues.append(("medium", "Deadlock", 1, "Inconsistent lock acquisition order detected across code paths"))
 
+    acquires = len(re.findall(r"\.acquire\(\)", text))
+    releases = len(re.findall(r"\.release\(\)", text))
+    if acquires > releases:
+        issues.append(("medium", "LockLeak", 1, "More lock acquire() than release() calls"))
+
     if re.search(r"threading\.Thread|asyncio\.create_task", text):
         issues.append(("low", "RaceCondition", 1, "Concurrency detected; validate shared-state synchronization"))
     return issues
