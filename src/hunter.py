@@ -26,7 +26,8 @@ def analyze_text(text: str):
     issues = []
     lines = text.splitlines()
     for i, l in enumerate(lines, start=1):
-        if re.search(r"while\s+(True|1)\s*:", l):
+        check = l.split('#', 1)[0]
+        if re.search(r"while\s+(True|1)\s*:", check):
             issues.append(("high", "InfiniteLoop", i, "while True/1 detected; ensure break/timeout"))
 
     orders = _lock_orders(lines)

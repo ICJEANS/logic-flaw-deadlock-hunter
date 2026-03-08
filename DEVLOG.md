@@ -21,3 +21,10 @@
 - Local test evidence:
   - Command: `python3 -m unittest discover -s tests -v`
   - Result: `Ran 4 tests` / `OK`
+
+## 2026-03-08 Round 3
+- Reduced false positives by ignoring commented `while` snippets in infinite-loop check.
+- Added test `test_ignore_commented_infinite_loop`.
+- Local test evidence:
+  - Command: `python3 -m unittest discover -s tests -v`
+  - Result: `Ran 5 tests` / `OK`
