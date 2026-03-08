@@ -16,7 +16,7 @@ def _lock_orders(lines: list[str]) -> set[tuple[str, str]]:
             if len(current) >= 2:
                 for i in range(len(current) - 1):
                     orders.add((current[i], current[i + 1]))
-        if ".release(" in line:
+        if ".release(" in line or not line.strip():
             current = []
 
     return orders

@@ -63,3 +63,10 @@
 - Local test evidence:
   - Command: `python3 -m unittest discover -s tests -v`
   - Result: `Ran 10 tests` / `OK`
+
+## 2026-03-08 Round 9
+- Reset lock-order chain on blank lines to reduce cross-block deadlock false positives.
+- Added test `test_blank_line_breaks_lock_sequence`.
+- Local test evidence:
+  - Command: `python3 -m unittest discover -s tests -v`
+  - Result: `Ran 11 tests` / `OK`
