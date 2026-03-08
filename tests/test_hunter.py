@@ -2,6 +2,7 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parents[1] / 'src'))
 import unittest
+from tempfile import TemporaryDirectory
 from hunter import analyze_text, analyze_path
 
 
@@ -36,6 +37,13 @@ class TestHunter(unittest.TestCase):
 
     def test_analyze_path_missing_target(self):
         self.assertEqual(analyze_path('/tmp/no-such-hunter-target-12345'), [])
+
+    def test_analyze_path_includes_pyw(self):
+        with TemporaryDirectory() as td:
+            f = Path(td) / "x.pyw"
+            f.write_text("while True:\n    pass\n")
+            rows = analyze_path(td)
+            self.assertTrue(any(r[1] == "InfiniteLoop" for r in rows))
 
     def test_no_deadlock_for_single_lock_order(self):
         sample = (

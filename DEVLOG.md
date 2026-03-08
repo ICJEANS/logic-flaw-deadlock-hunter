@@ -42,3 +42,10 @@
 - Local test evidence:
   - Command: `python3 -m unittest discover -s tests -v`
   - Result: `Ran 7 tests` / `OK`
+
+## 2026-03-08 Round 6
+- Extended path analysis to include `.pyw` files in addition to `.py`.
+- Added test `test_analyze_path_includes_pyw`.
+- Local test evidence:
+  - Command: `python3 -m unittest discover -s tests -v`
+  - Result: `Ran 8 tests` / `OK`
